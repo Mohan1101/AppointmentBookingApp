@@ -3,6 +3,8 @@
 import clsx from 'clsx'
 import Link from 'next/link'
 import Image from 'next/image'
+import axios from 'axios'
+import { useState , useEffect } from 'react'
 
 // @ts-ignore
 import { Menu, Transition } from '@headlessui/react'
@@ -21,6 +23,27 @@ export default function UserButton({
   isAuthenticated: boolean
   user: KindeUser
 }) {
+
+
+  const [isAllowed, setIsAllowed] = useState(false); // State to track if the user is allowed
+
+
+  useEffect(() => {
+    const checkUserAllowed = async () => {
+      try {
+        const response = await axios.post('http://localhost:3000/api/user', {
+          allowedusers: user.email 
+        });
+        setIsAllowed(response.data.allowed);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    
+    checkUserAllowed(); // Call the function when the component mounts
+  }, [user.email]); // Run the effect whenever the user's email changes
+
+
   return (
     <>
       {isAuthenticated ? (
@@ -52,7 +75,7 @@ export default function UserButton({
             leaveFrom='transform scale-100 opacity-100'
             leaveTo='transform scale-95 opacity-0'
           >
-            <Menu.Items className='bg-react dark:text-react absolute right-0 mt-1 flex w-96 origin-top-right flex-col rounded-xl py-6 text-white shadow-lg focus:outline-none dark:bg-white'>
+            <Menu.Items className='bg-react dark:text-react absolute right-0 mt-1 flex w-72 md:w-96 origin-top-right flex-col rounded-xl py-6 text-white shadow-lg focus:outline-none dark:bg-white'>
               <div className='mb-4 flex gap-4 px-6 text-sm'>
                 {user?.picture ? (
                   <div className='relative h-10 w-10'>
@@ -76,8 +99,32 @@ export default function UserButton({
                     {user?.given_name} {user?.family_name}
                   </p>
                   <p className='text-stone-400'>{user?.email}</p>
+                 
+                 
+                  
                 </div>
+                
               </div>
+              {isAllowed && (
+                <Menu.Item>
+                  {({ active }) => (
+                    <button
+                      className={clsx(
+                        active && 'bg-stone-700/50 dark:bg-stone-200',
+                        'inline-flex items-center gap-6 px-[34px] py-2 text-sm text-stone-400 dark:text-stone-500'
+                      )}
+                      onClick={() => {
+                        // navigate to the postslots page /postslots
+
+                        window.location.href = '/postslots';
+                      }}
+                    >
+                      <Cog8ToothIcon className='h-5 w-5 text-stone-400' />
+                      <span>Post Slots</span>
+                    </button>
+                  )}
+                </Menu.Item>
+              )}
               <Menu.Item>
                 {({ active }) => (
                   <Link
