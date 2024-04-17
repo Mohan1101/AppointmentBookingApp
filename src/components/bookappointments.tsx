@@ -23,13 +23,23 @@ export default function BookAppointments({
     isAuthenticated: boolean
     user: KindeUser
 }) {
+
+    interface Slot {
+        _id: string;
+        date: string;
+        time: string; // Add this line
+        slots: {
+            time: string;
+            booked: boolean;
+        }[];
+    }
     const [selectedDate, setSelectedDate] = useState<Date | null>(null);
 
     const[formmatDate, setFormmatDate] = useState<string>('');
 
     // State to manage modal visibility
     const [showModal, setShowModal] = useState(false);
-    const [availableSlots, setAvailableSlots] = useState<string[]>([]);
+    const [availableSlots, setAvailableSlots] = useState<Slot[]>([]);
 
     
 
@@ -141,10 +151,9 @@ export default function BookAppointments({
                                             <ul className="grid gap-2">
                                                 {availableSlots.map((slot, index) => (
                                                     <li key={index}>
-                                                        <button className={`bg-gray-200 rounded-md  font-medium text-green-500 py-2 px-4 hover:bg-green-500 hover:text-white `} onClick={() => handleBookAppointment(JSON.parse(slot)._id.toString())}>
-                  
-
-                                                           {(slot).time}
+                                                        <button className={`bg-gray-200 rounded-md  font-medium text-green-500 py-2 px-4 hover:bg-green-500 hover:text-white `} onClick={() => handleBookAppointment(slot._id)}>
+                                                            
+                                                            {slot.time}
                                                             
                                                         </button>
                                                     </li>
