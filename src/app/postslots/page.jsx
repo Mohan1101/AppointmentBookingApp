@@ -7,7 +7,8 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 export default function PostSlots() {
-    const [selectedDate, setSelectedDate] = useState('')
+    const [selectedDate, setSelectedDate] = useState(null);
+
     const [selectedSlot, setSelectedSlot] = useState(''); 
     const [availableSlots, setAvailableSlots] = useState([]);
 
