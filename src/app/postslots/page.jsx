@@ -7,9 +7,9 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 export default function PostSlots() {
-    const [selectedDate, setSelectedDate] = useState<Date | null>(null); // 
-    const [selectedSlot, setSelectedSlot] = useState<string>(''); // State for selected slot
-    const [availableSlots, setAvailableSlots] = useState<string[]>([]);
+    const [selectedDate, setSelectedDate] = useState('')
+    const [selectedSlot, setSelectedSlot] = useState(''); 
+    const [availableSlots, setAvailableSlots] = useState([]);
 
 
 
@@ -22,7 +22,7 @@ export default function PostSlots() {
     };
 
     // Function to remove slot from available slots
-    const removeSlot = (slotToRemove: string) => {
+    const removeSlot = (slotToRemove) => {
         const updatedSlots = availableSlots.filter(slot => slot !== slotToRemove);
         setAvailableSlots(updatedSlots);
     };
@@ -51,6 +51,8 @@ export default function PostSlots() {
             alert('Error posting slots. Please try again.');
         }
     };
+
+
     
 
 
