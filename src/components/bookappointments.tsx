@@ -9,7 +9,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import axios from 'axios';
 import Modal from 'react-modal';
-import VideoThumb from '@/public/images/hero-image-01.jpg'
+import VideoThumb from '@/public/images/hero-image-01.jpg';
 import ModalVideo from '@/components/modal-video'
 
 import { KindeUser } from '@kinde-oss/kinde-auth-nextjs/server'
