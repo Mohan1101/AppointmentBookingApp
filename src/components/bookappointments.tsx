@@ -14,6 +14,8 @@ import ModalVideo from '@/components/modal-video'
 
 import { KindeUser } from '@kinde-oss/kinde-auth-nextjs/server'
 
+
+
 export default function BookAppointments({
     isAuthenticated,
     user
@@ -140,10 +142,9 @@ export default function BookAppointments({
                                                 {availableSlots.map((slot, index) => (
                                                     <li key={index}>
                                                         <button className={`bg-gray-200 rounded-md  font-medium text-green-500 py-2 px-4 hover:bg-green-500 hover:text-white `} onClick={() => handleBookAppointment(JSON.parse(slot)._id.toString())}>
-                                         
+                  
 
-
-                                                            {slot.time.toString()}
+                                                           {(slot).time}
                                                             
                                                         </button>
                                                     </li>
