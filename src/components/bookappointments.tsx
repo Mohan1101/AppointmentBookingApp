@@ -7,11 +7,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import axios from 'axios';
-import { google } from 'googleapis';
-import { OAuth2Client } from 'google-auth-library';
-
 import Modal from 'react-modal';
-
 import VideoThumb from '@/public/images/hero-image-01.jpg'
 import ModalVideo from '@/components/modal-video'
 
@@ -39,7 +35,7 @@ export default function BookAppointments({
         if (date) {
             try {
                 // Convert selected date to a Date object and handle timezone conversion
-                const dateToCheck = date.toDate(); // Convert selectedDate to a Date object
+                const dateToCheck = new Date(date);
                 if (dateToCheck instanceof Date && !isNaN(dateToCheck.getTime())) {
                     const selectedDateUTC = new Date(dateToCheck.getTime() - dateToCheck.getTimezoneOffset() * 60000);
                     // Format the date to match the expected format in the backend route
