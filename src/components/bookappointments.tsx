@@ -82,6 +82,9 @@ export default function BookAppointments({
             if (responseData.slot) {
            
                 alert('Slot is available for booking');
+ 
+                
+        
                 // Handle appointment booked successfully
             } else {
                 alert('Slot is not available for booking');
