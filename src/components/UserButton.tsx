@@ -31,7 +31,7 @@ export default function UserButton({
   useEffect(() => {
     const checkUserAllowed = async () => {
       try {
-        const response = await axios.post('http://localhost:3000/api/user', {
+        const response = await axios.post('/api/user', {
           allowedusers: user.email 
         });
         setIsAllowed(response.data.allowed);

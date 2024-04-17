@@ -27,7 +27,7 @@ export default function BookAppointments({
     interface Slot {
         _id: string;
         date: string;
-        time: string; // Add this line
+        time: string; 
         slots: {
             time: string;
             booked: boolean;
