@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import Button from '@mui/material/Button';
+import dayjs from 'dayjs';
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -129,7 +130,7 @@ export default function BookAppointments({
                                         <DemoContainer components={['DatePicker']}>
                                             <DatePicker
                                                 label="Basic date picker"
-                                                value={selectedDate}
+                                                value={selectedDate ? dayjs(selectedDate) : null}
                                                 onChange={handleDateChange} />
                                         </DemoContainer>
                                     </LocalizationProvider>
@@ -139,7 +140,7 @@ export default function BookAppointments({
                                             <ul className="grid gap-2">
                                                 {availableSlots.map((slot, index) => (
                                                     <li key={index}>
-                                                        <button className={`bg-gray-200 rounded-md  font-medium text-green-500 py-2 px-4 hover:bg-green-500 hover:text-white ${slot.booked ? 'opacity-50 cursor-not-allowed' : ''}`} onClick={() => handleBookAppointment(slot._id)}>
+                                                        <button className={`bg-gray-200 rounded-md  font-medium text-green-500 py-2 px-4 hover:bg-green-500 hover:text-white `} onClick={() => handleBookAppointment(slot._id)}>
                                                             {slot.time}
                                                             
                                                         </button>
@@ -154,7 +155,8 @@ export default function BookAppointments({
 
                                 </div>
                                 <Button className="w-full bg-purple-600 hover:bg-purple-700 text-white"
-                                    onClick={handleBookAppointment}>Book Appointment</Button>
+                                    onClick={handleBookAppointment}>Book Appointment
+                                    </Button>
                             </div>
                         </div>
                         <div className="relative w-full md:w-1/2 lg:w-5/12" data-aos="fade-left">
