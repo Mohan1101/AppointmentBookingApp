@@ -7,6 +7,8 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import axios from 'axios';
+import { google } from 'googleapis';
+import { OAuth2Client } from 'google-auth-library';
 
 import Modal from 'react-modal';
 
@@ -24,9 +26,13 @@ export default function BookAppointments({
 }) {
     const [selectedDate, setSelectedDate] = useState<Date | null>(null);
 
+    const[formmatDate, setFormmatDate] = useState<string>('');
+
     // State to manage modal visibility
     const [showModal, setShowModal] = useState(false);
     const [availableSlots, setAvailableSlots] = useState<string[]>([]);
+
+    
 
     const handleDateChange = async (date: Date | null) => {
         setSelectedDate(date);
@@ -38,8 +44,10 @@ export default function BookAppointments({
                     const selectedDateUTC = new Date(dateToCheck.getTime() - dateToCheck.getTimezoneOffset() * 60000);
                     // Format the date to match the expected format in the backend route
                     const formattedDate = selectedDateUTC.toISOString().split('T')[0];
+
+                    setFormmatDate(formattedDate);
                     // Fetch available slots for the selected date from the backend
-                    const response = await axios.get(`/api/slot/${formattedDate}`);
+                    const response = await axios.get(`/api/slot/date/${formattedDate}`);
                     if (response.data.slot) {
                         setAvailableSlots(response.data.slot.slots);
                         console.log('Slots fetched:', response.data.slot.slots);
@@ -58,27 +66,34 @@ export default function BookAppointments({
         }
     };
 
-
-    const handleBookAppointment = async (slotId) => {
-        if (isAuthenticated) {
-            try {
-    
-                   // Send a request to update the slot in the backend
-                    await axios.put(`/api/slot/${slotId}`, {
-                        booked: true
-                    });
-
-                    console.log(`Slot at booked successfully`);
-   
-            } catch (error) {
-                console.error('Error booking slot:', error);
-                // Handle error booking slot
+   //pass the selected date and available slots to the backend to book an appointment
+    const handleBookAppointment = async (slotId: string) => {
+     
+        if (!selectedDate) {
+            console.log('Please select a date');
+            return;
+        }
+        try {
+            const response = await axios.post('/api/slot/book', {
+                date: formmatDate,
+                slotId,
+            });
+            const responseData = response.data;
+            if (responseData.slot) {
+           
+                alert('Slot is available for booking');
+                // Handle appointment booked successfully
+            } else {
+                alert('Slot is not available for booking');
+                // Handle appointment booking failed
             }
+        } catch (error) {
+            console.error('Error booking appointment:', error);
+            // Handle error booking appointment
         }
-        else {
-            setShowModal(true);
-        }
-    }
+    };
+
+
 
     return (
         <div>
