@@ -26,7 +26,8 @@ export default function Hero() {
           {/* Section header */}
           <div className="w-full max-w-3xl  text-center text-white pb-12 md:w-1/2 md:pb-16 ">
             <h1 className="h1 mb-4" data-aos="fade-up">Welcome to a journey of self-discovery and growth</h1>
-            <p className="text-xl text-gray-400 mb-8" data-aos="fade-up" data-aos-delay="200"> Let's navigate your path to inner peace together."</p>
+            <p className="text-xl text-gray-400 mb-8" data-aos="fade-up" data-aos-delay="200"> Let&apos;s navigate your path to inner peace together.</p>
+
             <div className="max-w-xs mx-auto sm:max-w-none sm:flex sm:justify-center">
               <div data-aos="fade-up" data-aos-delay="400">
                 <a className="btn text-white bg-purple-600 hover:bg-purple-700 w-full mb-4 sm:w-auto sm:mb-0" href="#features">Get started</a>
