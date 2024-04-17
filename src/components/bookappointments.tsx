@@ -126,14 +126,13 @@ export default function BookAppointments({
                                 <h1 className="text-3xl font-bold text-black">Book an Appointment</h1>
                                 <div className="flex flex-col gap-4">
                                     <label>Select Date:</label>
-                                    <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                        <DemoContainer components={['DatePicker']}>
-                                            <DatePicker
-                                                label="Basic date picker"
-                                                value={selectedDate ? dayjs(selectedDate) : null}
-                                                onChange={handleDateChange} />
-                                        </DemoContainer>
-                                    </LocalizationProvider>
+                                    <input
+                                        type="date"
+                                        value={selectedDate ? dayjs(selectedDate).format('YYYY-MM-DD') : ''}
+                                        onChange={(e) => handleDateChange(new Date(e.target.value))}
+                                        className="border border-gray-300 rounded-md p-2"
+                                    />
+                                    
                                     {availableSlots.length > 0 ? (
                                         <div className="mt-4">
                                             <label className="block mb-2 font-bold">Available Slots:</label>
@@ -154,9 +153,8 @@ export default function BookAppointments({
 
 
                                 </div>
-                                <Button className="w-full bg-purple-600 hover:bg-purple-700 text-white"
-                                    onClick={handleBookAppointment}>Book Appointment
-                                    </Button>
+                                <button className="w-full bg-purple-600 hover:bg-purple-700 text-white"
+                                >Book Appointment</button>
                             </div>
                         </div>
                         <div className="relative w-full md:w-1/2 lg:w-5/12" data-aos="fade-left">
