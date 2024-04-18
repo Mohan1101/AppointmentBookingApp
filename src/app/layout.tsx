@@ -5,6 +5,8 @@ import { Inter, Architects_Daughter } from 'next/font/google'
 import Header from '@/components/Header'
 import Banner from '@/components/banner'
 import Footer from '@/components/Footer'
+import {Provide} from '@/components/provide'
+
 
 export const metadata = {
   title: 'Appointment Booking App',
@@ -34,12 +36,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.variable} ${architects_daughter.variable} font-inter antialiased bg-white text-black tracking-tight`}>
+      <Provide>
         <div className="flex flex-col min-h-screen overflow-hidden">
           <Header />
           {children}
           <Banner />
         
         </div>
+        </Provide>
       </body>
     </html>
   )

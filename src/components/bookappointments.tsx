@@ -1,18 +1,17 @@
 'use client'
 
+
+import {Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure} from "@nextui-org/react";
+
 import React, { useState } from 'react';
-import Button from '@mui/material/Button';
+
 import dayjs from 'dayjs';
-import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import axios from 'axios';
-import Modal from 'react-modal';
 import VideoThumb from '@/public/images/hero-image-01.jpg'
 import ModalVideo from '@/components/modal-video'
 
 import { KindeUser } from '@kinde-oss/kinde-auth-nextjs/server'
+import { on } from "events";
 
 
 
@@ -37,9 +36,9 @@ export default function BookAppointments({
 
     const[formmatDate, setFormmatDate] = useState<string>('');
 
-    // State to manage modal visibility
-    const [showModal, setShowModal] = useState(false);
+
     const [availableSlots, setAvailableSlots] = useState<Slot[]>([]);
+    const {isOpen, onOpen, onOpenChange} = useDisclosure();
 
     
 
@@ -77,32 +76,36 @@ export default function BookAppointments({
 
    //pass the selected date and available slots to the backend to book an appointment
     const handleBookAppointment = async (slotId: string) => {
-     
-        if (!selectedDate) {
-            console.log('Please select a date');
-            return;
-        }
-        try {
-            const response = await axios.post('/api/slot/book', {
-                date: formmatDate,
-                slotId,
-            });
-            const responseData = response.data;
-            if (responseData.slot) {
-           
-                alert('Slot is available for booking');
- 
-                
-        
-                // Handle appointment booked successfully
-            } else {
-                alert('Slot is not available for booking');
-                // Handle appointment booking failed
+        if (!isAuthenticated) {
+            console.log('Please sign in to book an appointment');
+            onOpen();
+        } else {
+            if (!selectedDate) {
+                console.log('Please select a date');
+                return;
             }
-        } catch (error) {
-            console.error('Error booking appointment:', error);
-            // Handle error booking appointment
+            try {
+                const response = await axios.post('/api/slot/book', {
+                    date: formmatDate,
+                    slotId,
+                });
+                const responseData = response.data;
+                if (responseData.slot) {
+    
+            
+                    // Handle appointment booked successfully
+                } else {
+                    alert('Slot is not available for booking');
+                    // Handle appointment booking failed
+                }
+            } catch (error) {
+                console.error('Error booking appointment:', error);
+                // Handle error booking appointment
+            }
+
         }
+     
+       
     };
 
 
@@ -110,21 +113,49 @@ export default function BookAppointments({
     return (
         <div>
             {/* Modal for sign-in */}
+           
             <Modal
-                isOpen={showModal}
-                onRequestClose={() => setShowModal(false)}
-                contentLabel="Sign In Modal"
-                ariaHideApp={false}
-                className="px-2 fixed inset-0 flex items-center justify-center bg-black bg-opacity-80"
-            >
-                <div className="bg-white p-8 rounded-lg max-w-md w-full">
-                    <h2 className="text-2xl font-bold mb-4">Please Sign In</h2>
-                    <p className="text-gray-700 mb-4">You need to sign in to book an appointment.</p>
-                    {/* Add sign-in button or any other sign-in component */}
-                    <Button className="bg-purple-600 hover:bg-purple-700 text-white" onClick={() => setShowModal(false)}>Close</Button>
-                </div>
-            </Modal>
-
+        backdrop="blur"
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+        motionProps={{
+          variants: {
+            enter: {
+              y: 0,
+              opacity: 1,
+              transition: {
+                duration: 0.3,
+                ease: "easeOut",
+              },
+            },
+            exit: {
+              y: -20,
+              opacity: 0,
+              transition: {
+                duration: 0.2,
+                ease: "easeIn",
+              },
+            },
+          },
+        }}
+      >
+        <ModalContent>
+          {(onClose) => (
+            <>
+              <ModalHeader className="flex flex-col gap-1">Please Sign In</ModalHeader>
+              <ModalBody>
+                <p className="text-gray-700 mb-4">You need to sign in to book an appointment.</p>
+              </ModalBody>
+              <ModalFooter>
+                <Button color="danger" variant="light" onPress={onClose}>
+                  Close
+                </Button>
+               
+              </ModalFooter>
+            </>
+          )}
+        </ModalContent>
+      </Modal>
             <section className="bg-dark-900">
                 <div className="max-w-6xl mx-auto px-4 sm:px-6 relative">
 
@@ -166,8 +197,7 @@ export default function BookAppointments({
 
 
                                 </div>
-                                <button className="w-full bg-purple-600 hover:bg-purple-700 text-white"
-                                >Book Appointment</button>
+                                <Button className="bg-purple-600 hover:bg-purple-700 text-white">Book Appointment</Button>
                             </div>
                         </div>
                         <div className="relative w-full md:w-1/2 lg:w-5/12" data-aos="fade-left">

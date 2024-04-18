@@ -1,6 +1,6 @@
 // app/api/slot/[date]/route.js
 
-import connectMongoDB from "@/lib/db";
+import connectMongoDB from "@/libbackend/db";
 import Slot from "@/models/slot";
 import { NextResponse } from "next/server";
 
