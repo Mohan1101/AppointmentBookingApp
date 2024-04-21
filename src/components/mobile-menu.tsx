@@ -33,7 +33,7 @@ export default function MobileMenu() {
   })
 
   return (
-    <div className="md:hidden">
+    <div className="pt-2 pb-1 md:hidden">
       {/* Hamburger button */}
       <button
         ref={trigger}
@@ -63,7 +63,7 @@ export default function MobileMenu() {
       >
         <ul className="bg-gray-800 px-4 py-2">
           <li>
-            <Link href="#hero" className="flex font-medium w-full text-purple-600 hover:text-gray-200 py-2 justify-center" onClick={() => setMobileNavOpen(false)}>
+            <Link href="/" className="flex font-medium w-full text-purple-600 hover:text-gray-200 py-2 justify-center" onClick={() => setMobileNavOpen(false)}>
               Home
             </Link>
           </li>

@@ -6,14 +6,14 @@ import {
   LoginLink
 } from '@kinde-oss/kinde-auth-nextjs/server'
 
-import Dashboard from '@/components/dashboard'
+import AllAppointments from '@/components/allappointments'
 
-  export default async function DashboardPage() {
+  export default async function AllAppointmentsPage() {
       const { isAuthenticated, getUser } = getKindeServerSession()
       const user = getUser()
       return (
           <div>
-              <Dashboard isAuthenticated={isAuthenticated()} user={user} />
+              <AllAppointments isAuthenticated={isAuthenticated()} user={user} />
           </div>
  
       )

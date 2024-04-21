@@ -5,7 +5,12 @@ const slotSchema = new mongoose.Schema({
   slots: [
     {
       time: String,
-      booked: { type: Boolean, default: false }
+      booked: { type: Boolean, default: false },
+      userDetails: {
+        name: String,
+        email: String
+      },
+      paymentStatus: String
     }
   ]
 });

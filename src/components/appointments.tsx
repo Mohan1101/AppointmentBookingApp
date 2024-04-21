@@ -1,4 +1,3 @@
-
 import {
     getKindeServerSession,
     RegisterLink,
