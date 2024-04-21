@@ -21,8 +21,8 @@ export async function POST(request) {
           quantity: item.quantity,
         })),
         mode: 'payment',
-        success_url: `http://localhost:3000/success?session_id={CHECKOUT_SESSION_ID}&date=${date}&slotId=${slotId}`,
-        cancel_url: `http://localhost:3000/cancel`,
+        success_url: `https://appointment-booking-app.vercel.app/success?session_id={CHECKOUT_SESSION_ID}&date=${date}&slotId=${slotId}`,
+        cancel_url: `https://appointment-booking-app.vercel.app/cancel`,
         customer_email: customerInfo.email,
         metadata: {
           customerName: customerInfo.name,
