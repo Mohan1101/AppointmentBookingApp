@@ -4,7 +4,6 @@ import { Inter, Architects_Daughter } from 'next/font/google'
 
 import Header from '@/components/Header'
 import Banner from '@/components/banner'
-import Footer from '@/components/Footer'
 import {Provide} from '@/components/provide'
 
 
