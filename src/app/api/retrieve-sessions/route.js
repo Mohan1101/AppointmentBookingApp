@@ -5,7 +5,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 export async function POST(request) {
   const { session_id } = await request.json();
-  console.log(session_id);
+
 
   try {
     const session = await stripe.checkout.sessions.retrieve(session_id);

@@ -7,6 +7,7 @@ export default function SuccessClient({ sessionDetails }) {
   const session_id = sessionDetails.session_id;
   const date = sessionDetails.date;
   const slotId = sessionDetails.slotId;
+ 
 
   //format date to be displayed in the email as DD/MM/YYYY
   const formattedDate = (date) => {
@@ -28,55 +29,64 @@ export default function SuccessClient({ sessionDetails }) {
 
   useEffect(() => {
     const fetchSessionDetails = async () => {
+      console.log("Fetching session details for session_id:", session_id);
       try {
         if (session_id) {
           const response = await axios.post('/api/retrieve-sessions', { session_id });
-          const session = response.data.session;
-          const amountPaid = session?.amount_total || 0;
-          setAmountPaid(amountPaid / 100);
-
-          // Check if payment status is 'paid'
-          if (session?.payment_status === 'paid') {
-            // Trigger endpoint to set slot booked value to true
-            await axios.post('/api/slot/book', {
-              date: date,
-              slotId: slotId,
-              userDetails: {
-                name: session?.customer_details?.name,
-                email: session?.customer_details?.email,
-              },
-              paymentStatus: session?.payment_status,
-            });
-
-            //send email to the admin 
-            const response = await axios.post("/api/email", {
-              userDetails: {
-                name: session?.customer_details?.name,
-                email: session?.customer_details?.email,
-              },
-              appointmentDate: formattedDate(date),
-              paymentStatus: session?.payment_status,
-            });
-
-
-            if (response.data.success) {
-              console.log("Email sent successfully");
+          if (response.data) {
+            const session = response.data.session;
+            console.log('Session:', session);
+            const amountPaid = session?.amount_total || 0;
+            setAmountPaid(amountPaid / 100);
+  
+            if (session?.payment_status === 'paid') {
+              console.log("Processing paid session...");
+              const bookingResponse = await axios.post('/api/slot/book', {
+                date: date,
+                slotId: slotId,
+                userDetails: {
+                  name: session?.customer_details?.name,
+                  email: session?.customer_details?.email,
+                },
+                paymentStatus: session?.payment_status,
+              });
+  
+              console.log("Appointment Booked Successfully");
+  
+              if (bookingResponse.data && bookingResponse.status === 200) {
+                const appointmentTime = bookingResponse.data.appointmentTime;
+                console.log("Appointment Time:", appointmentTime);
+  
+                const emailResponse = await axios.post("/api/email", {
+                  userDetails: {
+                    name: session?.customer_details?.name,
+                    email: session?.customer_details?.email,
+                  },
+                  appointmentDate: formattedDate(date),
+                  appointmentTime: appointmentTime,
+                  paymentStatus: session?.payment_status,
+                });
+  
+                if (emailResponse.data.success) {
+                  console.log("Email sent successfully");
+                }
+              } else {
+                console.log('Error booking slot');
+              }
+            } else {
+              console.log('Payment status not paid');
             }
-
-
-            // Handle appointment booked successfully
-            console.log('Appointment booked successfully');
           } else {
-            // Handle payment status not paid
-            console.log('Payment status not paid');
+            console.log("No session data received");
           }
-
+        } else {
+          console.log("No session_id provided");
         }
       } catch (error) {
-        console.error(error);
+        console.error("Error fetching session details:", error);
       }
     };
-
+  
     fetchSessionDetails();
   }, [session_id]);
 

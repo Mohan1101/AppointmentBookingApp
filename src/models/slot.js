@@ -10,8 +10,11 @@ const slotSchema = new mongoose.Schema({
         name: String,
         email: String
       },
-      paymentStatus: String
+      paymentStatus: String,
+      completed: { type: Boolean, default: false },
+
     }
+
   ]
 });
 

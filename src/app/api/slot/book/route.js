@@ -51,11 +51,13 @@ export async function POST(request) {
     slot.userDetails = userDetails;
     slot.paymentStatus = paymentStatus;
 
+    const appointmentTime = slot.time;
+    console.log('appointmentTime', appointmentTime);
     // Save the updated slot entry
     await slotEntry.save();
 
-    // Return success response
-    return NextResponse.json({ slot: slotEntry }, { status: 200 });
+    // Return success response with appointmentTime
+    return NextResponse.json({ slot: slotEntry, appointmentTime: appointmentTime }, { status: 200 });
   } catch (error) {
     console.error("Error:", error);
     // Return error response

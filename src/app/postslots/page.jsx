@@ -41,7 +41,7 @@ export default function PostSlots() {
                 const selectedDateUTC = new Date(dateToCheck.getTime() - dateToCheck.getTimezoneOffset() * 60000);
                 const data = {
                     date: selectedDateUTC.toISOString().split('T')[0],
-                    slots: availableSlots.map(slot => ({ time: slot, booked: false, userDetails: { name: '', email: '' }, paymentStatus: '' }))
+                    slots: availableSlots.map(slot => ({ time: slot, booked: false, userDetails: { name: '', email: '' }, paymentStatus: '' , completed: false}))
                 };
                 await axios.post('/api/slot', data);
                 // Reset selected date and available slots after successful posting

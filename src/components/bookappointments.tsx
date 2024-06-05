@@ -1,7 +1,7 @@
 'use client'
 
 
-import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure } from "@nextui-org/react";
+import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure} from "@nextui-org/react";
 
 import React, { useState } from 'react';
 import { loadStripe } from '@stripe/stripe-js';
@@ -34,7 +34,7 @@ export default function BookAppointments({
             booked: boolean;
         }[];
     }
-    
+
     const [selectedDate, setSelectedDate] = useState<Date | null>(null);
 
     const [formmatDate, setFormmatDate] = useState<string>('');
@@ -45,12 +45,15 @@ export default function BookAppointments({
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
     const [result, setResult] = useState<any>(null);
     const [slotId, setSlotId] = useState<string>('');
+    const [isLoading, setIsLoading] = useState<boolean>(false);
+
 
 
 
     const handleDateChange = async (date: Date | null) => {
         setSelectedDate(date);
         if (date) {
+            setIsLoading(true);
             try {
                 // Convert selected date to a Date object and handle timezone conversion
                 const dateToCheck = new Date(date);
@@ -77,6 +80,7 @@ export default function BookAppointments({
                 console.error('Error fetching slots:', error);
                 // Handle error fetching slots
             }
+            setIsLoading(false);
         }
     };
 
@@ -246,7 +250,30 @@ export default function BookAppointments({
                                         className="border border-gray-300 rounded-md p-2"
                                     />
 
-                                    {availableSlots.length > 0 ? (
+                                    {/* {availableSlots.length > 0 ? (
+                                        <div className="mt-4">
+                                            <label className="block mb-2 font-bold">Available Slots:</label>
+                                            <div className="flex flex-wrap gap-2">
+                                                {availableSlots.map((slot, index) => (
+                                                    <button
+                                                        key={index}
+                                                        className={`bg-gray-200 rounded-md font-medium text-green-500 py-2 px-4 hover:bg-green-500 hover:text-white`}
+                                                        onClick={() => setSlotId(slot._id)}
+                                                    >
+                                                        {slot.time}
+                                                    </button>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    ) : (
+                                        <p className="mt-4">No slots available for the selected date</p>
+                                    )} */}
+                                    {isLoading ? (
+                                        <div className="flex flex-col items-center">
+                                            <div className="animate-spin h-10 w-10 mx-auto border-t-2 border-b-2 border-green-500 rounded-full"></div>
+                                            <p>Fetching Slots...</p>
+                                        </div>
+                                    ) : availableSlots.length > 0 ? (
                                         <div className="mt-4">
                                             <label className="block mb-2 font-bold">Available Slots:</label>
                                             <div className="flex flex-wrap gap-2">

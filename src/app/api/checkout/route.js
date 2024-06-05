@@ -10,7 +10,7 @@ export async function POST(request) {
     try {
       const { lineItems, customerInfo, date, slotId } = await request.json();
 
-      console.log(lineItems, customerInfo, date, slotId);
+      console.log(slotId);
 
       // Create a Checkout session with the provided line items and customer info
       const session = await stripe.checkout.sessions.create({
@@ -21,8 +21,10 @@ export async function POST(request) {
           quantity: item.quantity,
         })),
         mode: 'payment',
-        success_url: `https://appointment-booking-app.vercel.app/success?session_id={CHECKOUT_SESSION_ID}&date=${date}&slotId=${slotId}`,
-        cancel_url: `https://appointment-booking-app.vercel.app/cancel`,
+        // success_url: `https://appointment-booking-app.vercel.app/success?session_id={CHECKOUT_SESSION_ID}&date=${date}&slotId=${slotId}`,
+        // cancel_url: `https://appointment-booking-app.vercel.app/cancel`,
+        success_url: `http://localhost:3000/success?session_id={CHECKOUT_SESSION_ID}&date=${date}&slotId=${slotId}`,
+        cancel_url: `http://localhost:3000/cancel`,
         customer_email: customerInfo.email,
         metadata: {
           customerName: customerInfo.name,
